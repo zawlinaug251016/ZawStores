@@ -1,0 +1,455 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://cdnjs.cloudflare.com; worker-src blob: https://cdnjs.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'" /><meta name="referrer" content="no-referrer" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Zstores — Hospital Order Dispatch</title><link
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'><defs><linearGradient id='gZ' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%231A73E8'/><stop offset='35%25' stop-color='%238E24AA'/><stop offset='70%25' stop-color='%23E91E63'/><stop offset='100%25' stop-color='%23FFB300'/></linearGradient><radialGradient id='bG' cx='50%25' cy='50%25' r='50%25'><stop offset='0%25' stop-color='%232563EB' stop-opacity='0.4'/><stop offset='60%25' stop-color='%231E3A8A' stop-opacity='0.15'/><stop offset='100%25' stop-color='%230F172A' stop-opacity='0'/></radialGradient><filter id='gw' x='-20%25' y='-20%25' width='140%25' height='140%25'><feGaussianBlur stdDeviation='14' result='b'/><feComposite in='SourceGraphic' in2='b' operator='over'/></filter></defs><rect width='500' height='500' rx='100' fill='%230B1329'/><circle cx='250' cy='250' r='220' fill='url(%23bG)'/><path d='M 140 130 H 360 C 375 130, 385 142, 380 156 L 190 350 H 360 C 375 350, 385 362, 380 376 C 376 385, 368 390, 360 390 H 140 C 125 390, 115 378, 120 364 L 310 170 H 140 C 125 170, 115 158, 120 144 C 124 135, 132 130, 140 130 Z' fill='url(%23gZ)' filter='url(%23gw)'/></svg>"
+  /><link
+    rel="apple-touch-icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'><rect width='500' height='500' rx='100' fill='%230B1329'/><path d='M 140 130 H 360 C 375 130, 385 142, 380 156 L 190 350 H 360 C 375 350, 385 362, 380 376 C 376 385, 368 390, 360 390 H 140 C 125 390, 115 378, 120 364 L 310 170 H 140 C 125 170, 115 158, 120 144 C 124 135, 132 130, 140 130 Z' fill='%231A73E8'/></svg>"
+  /><meta name="theme-color" content="#0B1329" /><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet" /><script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js" crossorigin></script><script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script><script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script><script src="https://cdn.tailwindcss.com/3.4.17"></script><script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            display: ['Inter Tight', 'Inter', 'ui-sans-serif', 'sans-serif'],
+          },
+          colors: {
+            ink: '#0B1329',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>html{font-family:Inter,ui-sans-serif,system-ui,sans-serif;width:100%;min-width:0;-webkit-text-size-adjust:100%}body{margin:0;width:100%;min-width:0;overflow-x:hidden}#root{width:100%;min-width:0}*,*:before,*:after{box-sizing:border-box}.font-display{font-family:Inter Tight,Inter,ui-sans-serif,sans-serif}.tabular-nums{font-variant-numeric:tabular-nums}.zs-page,.zs-delivery-details,.zs-summary-card,.zs-summary-grid,.zs-ward-list,.zs-ward-card{width:100%;max-width:100%;min-width:0}button{-webkit-appearance:none;appearance:none;margin:0}::-webkit-scrollbar{height:8px;width:8px}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:8px}::-webkit-scrollbar-track{background:transparent}@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important;animation-duration:.001ms!important}}@keyframes zs-fade-in{0%{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}.zs-enter{animation:zs-fade-in .25s ease-out both}@media print{.no-print{display:none!important}body{background:#fff;color:#000;font-size:11pt}.card{border:1px solid #ccc!important;box-shadow:none!important;margin-bottom:.6rem}.print-row{page-break-inside:avoid;break-inside:avoid-page;-webkit-column-break-inside:avoid}.print-keep-with-next{page-break-after:avoid;break-after:avoid}.print-checkbox{width:14px;height:14px;border:1.5px solid #333;border-radius:3px;display:inline-block;flex-shrink:0}.print-header{display:flex!important}}.print-header{display:none}
+</style>
+</head><body class="min-h-screen text-slate-800 font-sans" style="background-color:#86A922"><div id="root"></div>
+
+  <script>
+/* Zstores helper: passcode hashing, backup/restore, change log, last-saved stamp. No network calls. */
+(function(){
+  var PREFIX="zstores_",LOG_KEY="zstores_changelog_v1",SAVED_KEY="zstores_lastsaved_v1";
+  function utf8(s){return unescape(encodeURIComponent(s))}
+  var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  function sha256(str){
+    var b=utf8(str),l=b.length,w=[],i,j;
+    for(i=0;i<l;i++)w[i>>2]|=b.charCodeAt(i)<<(24-(i%4)*8);
+    w[l>>2]|=0x80<<(24-(l%4)*8);
+    w[(((l+8)>>6)<<4)+15]=l*8;
+    var H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19],W=new Array(64);
+    for(i=0;i<w.length;i+=16){
+      var a=H[0],bb=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+      for(j=0;j<64;j++){
+        if(j<16)W[j]=w[i+j]|0;else{
+          var x=W[j-15],y=W[j-2];
+          var s0=((x>>>7)|(x<<25))^((x>>>18)|(x<<14))^(x>>>3);
+          var s1=((y>>>17)|(y<<15))^((y>>>19)|(y<<13))^(y>>>10);
+          W[j]=(W[j-16]+s0+W[j-7]+s1)|0;
+        }
+        var S1=((e>>>6)|(e<<26))^((e>>>11)|(e<<21))^((e>>>25)|(e<<7));
+        var ch=(e&f)^(~e&g);
+        var t1=(h+S1+ch+K[j]+W[j])|0;
+        var S0=((a>>>2)|(a<<30))^((a>>>13)|(a<<19))^((a>>>22)|(a<<10));
+        var mj=(a&bb)^(a&c)^(bb&c);
+        var t2=(S0+mj)|0;
+        h=g;g=f;f=e;e=(d+t1)|0;d=c;c=bb;bb=a;a=(t1+t2)|0;
+      }
+      H[0]=(H[0]+a)|0;H[1]=(H[1]+bb)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0;
+    }
+    var out="";for(i=0;i<8;i++)out+=("00000000"+(H[i]>>>0).toString(16)).slice(-8);
+    return out;
+  }
+  var SALT="zstores-admin-v1",ROUNDS=20000;
+  window.zsHashPin=function(pin){var h=sha256(SALT+String(pin));for(var i=1;i<ROUNDS;i++)h=sha256(h+SALT);return h};
+  window.zsSha256=sha256;
+
+  function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+  function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  /* last-saved stamp: any write to a zstores_ key records the time */
+  try{
+    var orig=Storage.prototype.setItem;
+    Storage.prototype.setItem=function(k,v){
+      orig.call(this,k,v);
+      if(this===window.localStorage&&typeof k==="string"&&k.indexOf(PREFIX)===0&&k!==SAVED_KEY&&k!==LOG_KEY){orig.call(this,SAVED_KEY,new Date().toISOString())}
+    };
+  }catch(e){}
+  function fmt(iso){try{return new Date(iso).toLocaleString()}catch(e){return iso}}
+  window.zsLastSaved=function(){var t=lsGet(SAVED_KEY);return t?fmt(t):"not yet"};
+
+  /* change log (kept on this device, max 200 entries, included in backups) */
+  window.zsGetLog=function(){try{var a=JSON.parse(lsGet(LOG_KEY)||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}};
+  window.zsLog=function(msg){var a=window.zsGetLog();a.push({t:new Date().toISOString(),m:String(msg).slice(0,200)});if(a.length>200)a=a.slice(-200);lsSet(LOG_KEY,JSON.stringify(a))};
+  window.zsFmtTime=fmt;
+  window.zsDiffRules=function(rules){
+    if(!rules||typeof rules!=="object")return;
+    var prev=window.__zsPrevRules;
+    if(prev){
+      Object.keys(rules).concat(Object.keys(prev)).filter(function(c,i,arr){return arr.indexOf(c)===i}).forEach(function(cat){
+        var nw=Array.isArray(rules[cat])?rules[cat]:[],od=Array.isArray(prev[cat])?prev[cat]:[];
+        nw.filter(function(x){return od.indexOf(x)<0}).forEach(function(x){window.zsLog('Rule added: "'+x+'" -> '+cat)});
+        od.filter(function(x){return nw.indexOf(x)<0}).forEach(function(x){window.zsLog('Rule removed: "'+x+'" from '+cat)});
+      });
+    }
+    try{window.__zsPrevRules=JSON.parse(JSON.stringify(rules))}catch(e){}
+  };
+
+  /* backup / restore of everything stored on this device */
+  window.zsExportAll=function(){
+    try{
+      var data={};
+      for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf(PREFIX)===0)data[k]=localStorage.getItem(k)}
+      var env={app:"zstores",format:1,exportedAt:new Date().toISOString(),data:data};
+      var blob=new Blob([JSON.stringify(env)],{type:"application/json"}),u=URL.createObjectURL(blob),a=document.createElement("a");
+      a.href=u;a.download="zstores-backup-"+new Date().toISOString().slice(0,10)+".json";
+      document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);
+      window.zsLog("Full backup exported");
+    }catch(e){alert("Could not create the backup.")}
+  };
+  window.zsImportAll=function(ev){
+    var f=ev.target.files&&ev.target.files[0];ev.target.value="";if(!f)return;
+    if(f.size>8*1024*1024){alert("That file is too large to be a Zstores backup.");return}
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var env=JSON.parse(r.result);
+        if(!env||env.app!=="zstores"||!env.data||typeof env.data!=="object")throw new Error("bad");
+        var keys=Object.keys(env.data);
+        for(var i=0;i<keys.length;i++){if(keys[i].indexOf(PREFIX)!==0||typeof env.data[keys[i]]!=="string")throw new Error("bad")}
+        if(!confirm("Replace ALL data on this device with the backup from "+fmt(env.exportedAt)+"? This cannot be undone."))return;
+        var old=[];for(var j=0;j<localStorage.length;j++){var k=localStorage.key(j);if(k&&k.indexOf(PREFIX)===0)old.push(k)}
+        old.forEach(function(k){if(k!==LOG_KEY)localStorage.removeItem(k)});
+        keys.forEach(function(k){if(k!==SAVED_KEY)localStorage.setItem(k,env.data[k])});
+        window.zsLog("Full backup imported (backup dated "+fmt(env.exportedAt)+")");
+        location.reload();
+      }catch(e){alert("That is not a valid Zstores backup file.")}
+    };
+    r.readAsText(f);
+  };
+})();
+</script>
+
+  <script type="text/babel" data-presets="react">const{useState,useEffect,useMemo,useCallback}=React;typeof pdfjsLib<"u"&&(pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js");const GeminiZLogo=({className:n="w-9 h-9"})=><svg xmlns="http://www.w3.org/2000/svg"viewBox="0 0 500 500"className={`${n} flex-shrink-0`}>
+        <defs>
+          <linearGradient id="hdrGeminiZ"x1="0%"y1="0%"x2="100%"y2="100%">
+            <stop offset="0%"stopColor="#1A73E8"/>
+            <stop offset="35%"stopColor="#8E24AA"/>
+            <stop offset="70%"stopColor="#E91E63"/>
+            <stop offset="100%"stopColor="#FFB300"/>
+          </linearGradient>
+          <radialGradient id="hdrBlueGlow"cx="50%"cy="50%"r="50%">
+            <stop offset="0%"stopColor="#2563EB"stopOpacity="0.4"/>
+            <stop offset="60%"stopColor="#1E3A8A"stopOpacity="0.15"/>
+            <stop offset="100%"stopColor="#0F172A"stopOpacity="0"/>
+          </radialGradient>
+          <filter id="hdrGlow"x="-20%"y="-20%"width="140%"height="140%">
+            <feGaussianBlur stdDeviation="14"result="blur"/>
+            <feComposite in="SourceGraphic"in2="blur"operator="over"/>
+          </filter>
+        </defs>
+        <rect width="500"height="500"rx="100"fill="#0B1329"/>
+        <circle cx="250"cy="250"r="220"fill="url(#hdrBlueGlow)"/>
+        <path d="M 140 130 H 360 C 375 130, 385 142, 380 156 L 190 350 H 360 C 375 350, 385 362, 380 376 C 376 385, 368 390, 360 390 H 140 C 125 390, 115 378, 120 364 L 310 170 H 140 C 125 170, 115 158, 120 144 C 124 135, 132 130, 140 130 Z"fill="url(#hdrGeminiZ)"filter="url(#hdrGlow)"/>
+      </svg>,DEFAULT_RULES={"ED(EMERGENCY) DAVE":[],"REHAB COLD RUN ZAW":["Brownes","Full Cream Milk PC","Hilo Milk PC","Full Cream Milk - Brownes","Hilo Milk - Brownes","Cheese - Cheddar PC","Rice Pudding","Custard PC","Vanilla Yogurt PC","Vanilla Yoghurt PC","Strawberry Yogurt PC","Strawberry Yoghurt PC","Apple Juice PC","Orange Juice PC","Fresh Apple","Apple Fresh","Ice Coffee","Iced Coffee","Chocolate Chill","Ham & Salad Sandwich","Egg Mayo Sandwich"],"REHAB DRY RUN STEVE":[],"JUICE RUN McCUTCHEON":["Apple Juice","Orange Juice","Diced Peaches","Diced Pears"],"CHILLER RUN AUNG":["Full Cream Milk","Hilo Milk","Hilo PC Milk","Brownes","Vanilla Yoghurt","Strawberry Yoghurt","Strawberry Yogurt","Rice Pudding","Custard","Cheese - Cheddar","Cheddar PC","Sandwich","Ham & Salad","Egg Mayo"],"DRY RUN JAMES":["White Sugar","Coffee PC","Decaf Coffee","Sweetener","Water Crackers","Scotch Nice","Soy Milk","Rice Milk","Lactose Free Milk","Tea Bags Black","Green Tea","Tea Bags - Bushells","Fruit Cake PC","Milo"],"AB/CD FREEZER RUN BEN":["Ice Cream","Butter PC","Margarine PC"],"REHAB FREEZER RUN LIN":[],"AFTERNOON RUN YEO":["Bananas fresh","Fresh Bananas","Apple Fresh","Fresh Apple","Carrot Cake"],"PANTRY RUN YEE":["Thick","Thickened","Level 100","Level 400","Level 900"],"MEDI HOTEL RUN":[],"SUNDAY RUN":[],"CD MILK RUN":[],"AB MILK RUN":[]},REHAB_WARDS=["fshrehab2","fshrehab1","fshrehabground","fshrehabg","fshmentalhealtha","rehab2","rehab1","rehabground","rehabg","mentalhealtha","mentalhealth"],MEDI_HOTEL_WARDS=["m8","m7","m6","m5"],ICE_COFFEE_BEN_PANTRY_WARDS=["7cd","6cd","5cd","4cd","3cd","ccu","icu","7ab","6ab","5ab","4ab","3ab","ssu"],REHAB_FREEZER_KEYWORDS=["butter pc","margarine pc","ice cream","ice-cream","carrot cake","white bread","wholemeal bread","multigrain bread","le moulin","apple puree","diced pears","diced peaches","riviana"],AFTERNOON_KEYWORDS=["apple fresh","fresh apple","bananas fresh","fresh bananas","banana","carrot cake"],BREAD_KEYWORDS=["white bread","wholemeal bread","multigrain bread","le moulin","bread"],JUICE_WARD_ORDER=["Mental Health","Mental Health A","Rehab 2","Rehab Ground","Rehab G","Rehab 1","FSH SSU","SSU","FSH 3AB","3AB","FSH 4AB","4AB","FSH 5AB","5AB","FSH 6AB","6AB","FSH 7AB","7AB","FSH 7CD","7CD","FSH 6CD","6CD","FSH 5CD","5CD","FSH 4CD","4CD","FSH 3CD","3CD","FSH CCU","CCU","ICU CLINICAL FRIDGE","FSH ICU","ICU","FSH - M8","M8","FSH - M7","M7","FSH - M6","M6","FSH - M5","M5"],CHILLER_WARD_ORDER=["Mental Health","Rehab Ground","Rehab G","Rehab 2","Rehab 1","FSH 7CD","7CD","FSH 6CD","6CD","FSH 5CD","5CD","FSH 4CD","4CD","FSH 3CD","3CD","FSH CCU","CCU","ICU CLINICAL FRIDGE","FSH ICU","ICU","FSH 7AB","7AB","FSH 6AB","6AB","FSH 5AB","5AB","FSH 4AB","4AB","FSH 3AB","3AB","FSH SSU","SSU","FSH - M8","M8","FSH - M7","M7","FSH - M6","M6","FSH - M5","M5"],ZAW_REHAB_WARD_ORDER=["Mental Health A","FSH-Mental Health A","Rehab G","FSH-Rehab G","Rehab Ground","FSH-Rehab Ground","Rehab 2","FSH-Rehab 2","Rehab 1","FSH-Rehab 1"],STEVE_REHAB_WARD_ORDER=["Mental Health A","FSH-Mental Health A","Rehab 2","FSH-Rehab 2","Rehab G","FSH-Rehab G","Rehab Ground","FSH-Rehab Ground","Rehab 1","FSH-Rehab 1"],REHAB_FREEZER_WARD_ORDER=["Rehab Ground","FSH-Rehab Ground","Rehab G","FSH-Rehab G","Rehab 2","FSH-Rehab 2","Rehab 1","FSH-Rehab 1","Mental Health A","FSH-Mental Health A"],STANDARD_RUN_WARD_ORDER=["FSH 7CD","7CD","FSH 6CD","6CD","FSH 5CD","5CD","FSH 4CD","4CD","FSH 3CD","3CD","FSH CCU","CCU","ICU CLINICAL CUPBOARD","FSH ICU","ICU","FSH 7AB","7AB","FSH 6AB","6AB","FSH 5AB","5AB","FSH 4AB","4AB","FSH 3AB","3AB","FSH SSU","SSU"],AVAILABLE_CATEGORIES=["ED(EMERGENCY) DAVE","REHAB COLD RUN ZAW","REHAB DRY RUN STEVE","REHAB FREEZER RUN LIN","JUICE RUN McCUTCHEON","CHILLER RUN AUNG","CD MILK RUN","AB MILK RUN","DRY RUN JAMES","AB/CD FREEZER RUN BEN","AFTERNOON RUN YEO","PANTRY RUN YEE","MEDI HOTEL RUN","SUNDAY RUN"],EDITABLE_CATEGORIES=["REHAB COLD RUN ZAW","JUICE RUN McCUTCHEON","CHILLER RUN AUNG","DRY RUN JAMES","AB/CD FREEZER RUN BEN","AFTERNOON RUN YEO","PANTRY RUN YEE"],WARD_ONLY_CATEGORIES={"ED(EMERGENCY) DAVE":"Assigned automatically \u2014 every item for the Emergency Department ward goes here.","MEDI HOTEL RUN":"Assigned automatically by ward (M5\u2013M8) and item temperature zone.","SUNDAY RUN":"Sundays only \u2014 all orders that would go to Dry Run James and Pantry Run Yee are listed here instead, sorted freezer \u2192 chiller \u2192 dry.","CD MILK RUN":"Assigned automatically \u2014 Full Cream Milk - Brownes (2 Litre) from Chiller Run Aung, plus Diced Peaches PC and Diced Pears PC (Riviana) from Juice Run McCutcheon, for wards 7CD to ICU.","AB MILK RUN":"Assigned automatically \u2014 Full Cream Milk - Brownes (2 Litre) from Chiller Run Aung, plus Diced Peaches PC and Diced Pears PC (Riviana) from Juice Run McCutcheon, for wards 7AB to SSU.","REHAB DRY RUN STEVE":"Automatic fallback for rehab-ward items that aren't on the Cold Run list.","REHAB FREEZER RUN LIN":"Assigned automatically \u2014 freezer-type items (ice cream, butter, margarine, breads, etc.) for the rehab wards and Mental Health A."},UNIT_ALIASES={each:"Each",eaches:"Each",ea:"Each",litre:"Litre",litres:"Litre",liter:"Litre",liters:"Litre",kilogram:"Kilogram",kilograms:"Kilogram",kg:"Kilogram",kgs:"Kilogram"},zsPrep=()=>{try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;try{navigator.audioSession&&(navigator.audioSession.type="playback")}catch{}const c=window.__zsCtx=window.__zsCtx||new C();if(!window.__zsEl){const a=document.createElement("audio");a.src="data:audio/wav;base64,UklGRmQfAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YUAfAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==";a.setAttribute("playsinline","");a.preload="auto";window.__zsEl=a}const a=window.__zsEl;if(a.paused){try{a.currentTime=0}catch{}const p=a.play();p&&p.catch&&p.catch(()=>{})}return c}catch{return null}},zsBeep=(f,t0,d,v,ty)=>{try{if(window.__zsMute)return;const c=zsPrep();if(!c)return;const go=()=>{try{const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+t0;o.type=ty||"sine";o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+d+.05)}catch{}};if(c.state!=="running"&&c.resume){c.resume().then(go,go)}else go()}catch{}},playTick=()=>zsBeep(1200,0,.08,.15,"triangle"),playUntick=()=>zsBeep(700,0,.06,.08,"triangle"),zsDoneSounds={chime:()=>{zsBeep(659,0,.18,.25);zsBeep(880,.16,.18,.25);zsBeep(1319,.32,.45,.25)},bell:()=>{zsBeep(1568,0,.9,.25);zsBeep(2093,0,.6,.1)},fanfare:()=>{zsBeep(523,0,.15,.2,"triangle");zsBeep(659,.12,.15,.2,"triangle");zsBeep(784,.24,.15,.2,"triangle");zsBeep(1047,.36,.5,.25,"triangle")},dingdong:()=>{zsBeep(880,0,.4,.25);zsBeep(659,.35,.6,.25)},success:()=>{zsBeep(988,0,.1,.12,"square");zsBeep(1319,.12,.3,.12,"square")}},playDone=()=>{const k=window.__zsDone||"chime";if(k==="custom"&&window.__zsCustom){try{if(window.__zsMute)return;zsPrep();const a=new Audio(window.__zsCustom);const p=a.play();p&&p.catch&&p.catch(()=>{})}catch{}return}(zsDoneSounds[k]||zsDoneSounds.chime)()},zawRank=n=>{const t=n.toLowerCase();if(t.includes("chocolate chill"))return 0;if(t.includes("iced coffee")||t.includes("ice coffee"))return 1;if(/strawberry\s+yog/.test(t))return 2;if(/vanilla\s+yog/.test(t))return 3;const two=/\b2\s*(litres?|liters?|ltrs?|lt|l)\b/.test(t);if(t.includes("full cream milk")&&!two)return 4;if(t.includes("hilo"))return 5;if(t.includes("rice pudding"))return 6;if(t.includes("custard"))return 7;if(t.includes("apple juice"))return 8;if(t.includes("orange juice"))return 9;if(t.includes("fresh apple")||t.includes("apple fresh"))return 10;if(t.includes("full cream milk")&&two)return 11;if(t.includes("cheese")||t.includes("cheddar"))return 12;if(t.includes("sandwich"))return 13;return 99},chillerRank=n=>{const t=n.toLowerCase(),two=/\b2\s*(litres?|liters?|ltrs?|lt|l)\b/.test(t);if(t.includes("full cream milk")&&!two)return 0;if(t.includes("hilo"))return 1;if(/vanilla\s+yog/.test(t))return 2;if(t.includes("rice pudding"))return 3;if(t.includes("custard"))return 4;if(/strawberry\s+yog/.test(t))return 5;if(t.includes("full cream milk")&&two)return 6;if(t.includes("cheese")||t.includes("cheddar"))return 7;if(t.includes("sandwich"))return 8;return 99},steveRank=n=>{const t=n.toLowerCase();if(t.includes("plate")&&/\b7\b/.test(t))return 0;if(t.includes("plate"))return 1;if(t.includes("bowl"))return 2;if(t.includes("toast")&&t.includes("bag"))return 3;if(t.includes("cutlery"))return 4;if(/\bstraws?\b/.test(t))return 5;if(t.includes("paper cup")||t.includes("cups disposable"))return 6;if(t.includes("spoon"))return 6.5;if(t.includes("banana"))return 7;if(t.includes("thick")||t.includes("level"))return 8;if(t.includes("bushells"))return 9;if(t.includes("green tea"))return 13;if(t.includes("lipton")||t.includes("tea bags black"))return 10;if(t.includes("decaf"))return 14;if(t.includes("coffee")||t.includes("nescafe"))return 11;if(t.includes("sugar"))return 12;if(/\bequal\b/.test(t)||t.includes("sweetener"))return 15;if(t.includes("soy milk"))return 16;if(t.includes("lactose free"))return 17;if(t.includes("rice milk"))return 18;if(t.includes("strawberry jam")||/\bjam\b/.test(t))return 19;if(t.includes("vegemite"))return 20;if(t.includes("honey"))return 21;if(t.includes("marmalade"))return 22;if(t.includes("milo"))return 23;if(t.includes("scotch")||t.includes("nice biscuit"))return 24;if(t.includes("cracker"))return 25;if(t.includes("twin vanilla"))return 26;return 99},CHILLER_LIMITS={0:42,1:42,2:152,3:60,4:60,5:52,6:30,7:400},CHILLER_STANDING={0:10,1:10,2:15,3:8,4:8,5:6},CHILLER_STANDING_NAMES={0:"Full Cream Milk PC - Brownes",1:"Hilo Milk PC - Brownes",2:"Vanilla Yoghurt PC",3:"Rice Pudding - Birch & Waite",4:"Custard PC - Birch & Waite",5:"Strawberry Yoghurt PC",6:"Full Cream Milk - Brownes (2 Litre)"},chillerLimit=n=>{const k=chillerRank(n);return k in CHILLER_LIMITS?CHILLER_LIMITS[k]:null},ADMIN_HASH="44226db036fb8ad68eabb56edc09e37a88968d891d7215aa0ae0cbd51c4bb0e9",ZAW_LIMITS={0:0,1:0,4:12,5:12,3:52,2:20,6:30,7:30,8:96,9:96,11:10,12:100,10:25},zawLimit=n=>{const k=zawRank(n);return k in ZAW_LIMITS?ZAW_LIMITS[k]:null},milkRank=n=>{const t=n.toLowerCase();return t.includes("milk")?0:t.includes("peach")?1:t.includes("pear")?2:99},milkRunMatch=e=>{const t=(e.name||"").toLowerCase();return e.category==="CHILLER RUN AUNG"?chillerRank(e.name||"")===6:e.category==="JUICE RUN McCUTCHEON"?/diced\s+(peaches?|pears?)/.test(t):!1},milkRunCat=e=>milkRunMatch(e)?(/[3-7]ab|ssu/.test((e.ward||"").toLowerCase().replace(/[^a-z0-9]/g,""))?"AB MILK RUN":"CD MILK RUN"):null,CD_MILK_WARD_ORDER=["FSH 7CD","7CD","FSH 6CD","6CD","FSH 5CD","5CD","FSH 4CD","4CD","FSH 3CD","3CD","FSH CCU","CCU","ICU CLINICAL FRIDGE","FSH ICU","ICU"],AB_MILK_WARD_ORDER=["FSH 7AB","7AB","FSH 6AB","6AB","FSH 5AB","5AB","FSH 4AB","4AB","FSH 3AB","3AB","FSH SSU","SSU"],runLimit=(m,n)=>m==="CHILLER RUN AUNG"||m==="CD MILK RUN"||m==="AB MILK RUN"?chillerLimit(n):m==="REHAB COLD RUN ZAW"?zawLimit(n):null,runStanding=(m,n)=>{return m==="CHILLER RUN AUNG"?CHILLER_STANDING[chillerRank(n)]:m==="REHAB COLD RUN ZAW"&&/fruit platter/i.test(n)?10:void 0},STANDING_DEFS={"CD MILK RUN":{ward:"ICU CLINICAL FRIDGE",perLevel:!0,items:[{re:/full cream milk/i,name:"Full Cream Milk - Brownes (2 Litre)",qty:1,unit:"Each"}]},"DRY RUN JAMES":{ward:"ICU CLINICAL CUPBOARD",items:[{re:/milo\s+sachet/i,name:"Milo Sachet - Nestle",qty:15,unit:"Each"},{re:/tea bags? black/i,name:"Tea Bags Black - Lipton",qty:1,unit:"Unit"},{re:/white sugar/i,name:"White Sugar PC",qty:1,unit:"Unit"},{re:/blend 43/i,name:"Coffee PC - Nescafe Blend 43",qty:1,unit:"Unit"},{re:/scotch|nice biscuit/i,name:"Scotch Nice Biscuit PC - Arnotts",qty:1,unit:"BOX"},{re:/water cracker/i,name:"Water Crackers PC - Arnotts",qty:1,unit:"BOX"},{re:/weet-?bix/i,name:"Weetbix PC - Sanitarium",qty:5,unit:"Each"},{re:/corn\s*flakes/i,name:"Cornflakes Gluten Free PC - Eatwell",qty:5,unit:"Each"}]},"JUICE RUN McCUTCHEON":{ward:"ICU CLINICAL FRIDGE",perLevel:!0,items:[{re:/apple juice/i,name:"Apple Juice PC Ripe Road",qty:48,unit:"Each"},{re:/orange juice/i,name:"Orange Juice PC - Ripe Road",qty:32,unit:"Each"},{re:/diced peaches?/i,name:"Diced Peaches PC - Riviana",qty:10,unit:"Each"}]}},summaryKey=a=>/water cracker/i.test(a.name||"")?"Water Crackers PC - Arnotts (Box)":getItemDisplayKey(a),SUNDAY_SOURCE_RUNS=["DRY RUN JAMES","PANTRY RUN YEE"],isSundayDate=n=>{const o=(n||"").match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);if(!o)return!1;const y=o[3].length===2?2000+ +o[3]:+o[3];return new Date(y,+o[2]-1,+o[1]).getDay()===0},DATE_REGEX=/\d{1,4}[\/\-.]\d{1,2}[\/\-.]\d{1,4}/,formatDateDDMMYY=n=>{if(!n)return"";const o=n.match(/(\d{1,4})[\/\-.](\d{1,2})[\/\-.](\d{1,4})/);if(o){let i,d,h;return o[1].length===4||o[1].length===2&&parseInt(o[1],10)>31?(h=o[1].slice(-2).padStart(2,"0"),d=o[2].padStart(2,"0"),i=o[3].padStart(2,"0")):(i=o[1].padStart(2,"0"),d=o[2].padStart(2,"0"),h=o[3].slice(-2).padStart(2,"0")),`${i}/${d}/${h}`}return n},normalizeLine=n=>n.replace(/\u00A0/g," ").replace(/\s+/g," ").trim(),UNIT_HINT_REGEX=/\((?:[^()]*\b(?:each|eaches|ea|litre|litres|liter|liters|kilogram|kilograms|kg|kgs)\b[^()]*)\)\s*$/i,getItemDisplayKey=n=>UNIT_HINT_REGEX.test(n.name)?n.name:`${n.name} (${n.unit})`,RUN_ACCENTS={"ED(EMERGENCY) DAVE":"amber","REHAB COLD RUN ZAW":"amber","REHAB DRY RUN STEVE":"amber","REHAB FREEZER RUN LIN":"cyan","JUICE RUN McCUTCHEON":"amber","CHILLER RUN AUNG":"amber","DRY RUN JAMES":"amber","AB/CD FREEZER RUN BEN":"cyan","AFTERNOON RUN YEO":"amber","PANTRY RUN YEE":"amber","MEDI HOTEL RUN":"violet","SUNDAY RUN":"yellow","CD MILK RUN":"yellow","AB MILK RUN":"yellow"};function CategoryLabel({name:n,isSelected:o}){const i={amberSelected:"bg-amber-400 text-slate-900 px-1 rounded font-extrabold",amber:"bg-amber-300 text-slate-900 px-1 rounded font-bold",blueSelected:"bg-blue-400 text-slate-900 px-1 rounded font-extrabold",blue:"bg-blue-300 text-slate-900 px-1 rounded font-bold",emeraldSelected:"bg-emerald-400 text-slate-900 px-1 rounded font-extrabold",emerald:"bg-emerald-300 text-slate-900 px-1 rounded font-bold",cyanSelected:"bg-cyan-400 text-slate-900 px-1 rounded font-extrabold",cyan:"bg-cyan-300 text-slate-900 px-1 rounded font-bold",yellowSelected:"bg-yellow-400 text-slate-900 px-1 rounded font-extrabold",yellow:"bg-yellow-300 text-slate-900 px-1 rounded font-bold",violetSelected:"bg-violet-400 text-slate-900 px-1 rounded font-extrabold",violet:"bg-violet-300 text-slate-900 px-1 rounded font-bold"},d=o?i.amberSelected:i.amber,h=o?i.blueSelected:i.blue,w=o?i.emeraldSelected:i.emerald,E=o?i.cyanSelected:i.cyan,F=o?i.yellowSelected:i.yellow,pv=o?i.violetSelected:i.violet,A={"ED(EMERGENCY) DAVE":<><span className={d}>ED(EMERGENCY)</span> <span className={w}>DAVE</span></>,"REHAB COLD RUN ZAW":<><span className={d}>REHAB COLD RUN</span> <span className={w}>ZAW</span></>,"REHAB DRY RUN STEVE":<><span className={d}>REHAB DRY RUN</span> <span className={w}>STEVE</span></>,"REHAB FREEZER RUN LIN":<><span className={E}>REHAB FREEZER RUN</span> <span className={w}>LIN</span></>,"JUICE RUN McCUTCHEON":<><span className={d}>JUICE RUN</span> <span className={w}>McCUTCHEON</span></>,"CHILLER RUN AUNG":<><span className={d}>CHILLER RUN</span> <span className={w}>AUNG</span></>,"DRY RUN JAMES":<><span className={d}>DRY RUN</span> <span className={w}>JAMES</span></>,"AB/CD FREEZER RUN BEN":<><span className={E}>AB/CD FREEZER RUN</span> <span className={w}>BEN</span></>,"AFTERNOON RUN YEO":<><span className={d}>AFTERNOON RUN</span> <span className={w}>YEO</span></>,"PANTRY RUN YEE":<><span className={d}>PANTRY RUN</span> <span className={w}>YEE</span></>,"MEDI HOTEL RUN":<><span className={pv}>MEDI HOTEL</span> <span className={pv}>RUN</span></>,"SUNDAY RUN":<><span className={F}>SUNDAY</span> <span className={F}>RUN</span></>,"CD MILK RUN":<><span className={F}>CD MILK RUN</span></>,"AB MILK RUN":<><span className={F}>AB MILK RUN</span></>};return<span>{A[n]||n}</span>}function ProgressBar({done:n,total:o,colorClass:i="bg-emerald-500"}){const d=o>0?Math.round(n/o*100):0;return<div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+          <div className={`h-full ${i} transition-all duration-300 ease-out`}style={{width:`${d}%`}}/>
+        </div>}function TriStateCheckbox({checked:n,indeterminate:o,onChange:i,label:d}){const h=React.useRef(null);return useEffect(()=>{h.current&&(h.current.indeterminate=o)},[o]),<input ref={h}type="checkbox"checked={n}onChange={i}aria-label={d}className="w-[18px] h-[18px] accent-emerald-600 rounded cursor-pointer flex-shrink-0"/>}function App(){const[n,o]=useState(()=>{try{const e=localStorage.getItem("zstores_rules_v30");return e?(r=>{const q={...r};delete q["MILK RUN"];["CD MILK RUN","AB MILK RUN"].forEach(k=>{q[k]=q[k]||[]});return q})(JSON.parse(e)):DEFAULT_RULES}catch{return DEFAULT_RULES}}),[i0,d]=useState(()=>{try{const e=localStorage.getItem("zstores_orders_v1");return e?JSON.parse(e):[]}catch{return[]}}),[h,w]=useState(()=>{try{const e=localStorage.getItem("zstores_unmatched_v1");return e?JSON.parse(e):[]}catch{return[]}}),[E,A]=useState(()=>{try{return localStorage.getItem("zstores_extracteddate_v1")||""}catch{return""}}),[O,Q]=useState(()=>{try{return localStorage.getItem("zstores_filename_v1")||""}catch{return""}}),[m,ee]=useState("ED(EMERGENCY) DAVE"),[x,S]=useState(()=>{try{const e=localStorage.getItem("zstores_checked_v1");return e?JSON.parse(e):{}}catch{return{}}}),[te,D]=useState(()=>{try{const e=localStorage.getItem("zstores_ticked_v1");return e?JSON.parse(e):{}}catch{return{}}}),[y,v]=useState(null),[R,W]=useState("picker"),[H,Y]=useState(""),[k,ae]=useState(EDITABLE_CATEGORIES[0]),[P,Z]=useState(!1),[$,C]=useState(""),[se,_]=useState(!1);const[adminOk,setAdminOk]=useState(!1),[pinOpen,setPinOpen]=useState(!1),[pinVal,setPinVal]=useState(""),[pinErr,setPinErr]=useState(!1),tryPin=()=>{const now=Date.now();if(window.__zsLock&&now<window.__zsLock){setPinErr("locked");return}if(window.zsHashPin(pinVal)===ADMIN_HASH){window.__zsFail=0;window.zsLog("Settings unlocked");setAdminOk(!0),setPinOpen(!1),setPinVal(""),setPinErr(!1),W("settings")}else{window.__zsFail=(window.__zsFail||0)+1;if(window.__zsFail>=5){window.__zsLock=now+3e4;window.__zsFail=0;window.zsLog("Passcode locked for 30 s after 5 wrong attempts")}setPinErr(!0)}};const[sunFlag,setSunFlag]=useState(()=>{try{return localStorage.getItem("zstores_sunflag_v1")==="1"}catch{return!1}}),isSunday=new Date().getDay()===0,i=useMemo(()=>{const r=i0.map(e=>/water cracker/i.test(e.name||"")&&e.unit!=="Box"?{...e,unit:"Box"}:e).flatMap(e=>{const t=(e.name||"").toLowerCase();if(!(t.includes("sandwich")||t.includes("freshstar")||t.includes("ham & salad")||t.includes("egg mayo")))return[e];const w=(e.ward||"").toLowerCase().replace(/[^a-z0-9]/g,"");return REHAB_WARDS.some(x=>w.includes(x))?[e.category==="REHAB COLD RUN ZAW"?e:{...e,category:"REHAB COLD RUN ZAW"}]:[]});const r2=r.map(e=>{const c=milkRunCat(e);return c?{...e,category:c}:e});return isSunday?r2.map(e=>SUNDAY_SOURCE_RUNS.includes(e.category)?{...e,category:"SUNDAY RUN"}:e):r2},[i0,isSunday]);useEffect(()=>{try{localStorage.setItem("zstores_sunflag_v1",sunFlag?"1":"0")}catch{}},[sunFlag]);const[soundOn,setSoundOn]=useState(()=>{try{return localStorage.getItem("zstores_sound_v1")!=="0"}catch{return!0}});useEffect(()=>{const h=()=>{if(!window.__zsMute){const c=zsPrep();c&&c.state!=="running"&&c.resume&&c.resume()}};["touchstart","touchend","click"].forEach(t=>document.addEventListener(t,h,{passive:!0}));return()=>["touchstart","touchend","click"].forEach(t=>document.removeEventListener(t,h))},[]);useEffect(()=>{window.__zsMute=!soundOn;try{localStorage.setItem("zstores_sound_v1",soundOn?"1":"0")}catch{}},[soundOn]);const[doneSound,setDoneSound]=useState(()=>{try{return localStorage.getItem("zstores_donesound_v1")||"chime"}catch{return"chime"}}),[doneCustom,setDoneCustom]=useState(()=>{try{return localStorage.getItem("zstores_donecustom_v1")||""}catch{return""}}),[doneName,setDoneName]=useState(()=>{try{return localStorage.getItem("zstores_donename_v1")||""}catch{return""}}),[soundOpen,setSoundOpen]=useState(!1),[soundErr,setSoundErr]=useState("");window.__zsDone=doneSound;window.__zsCustom=doneCustom;useEffect(()=>{try{localStorage.setItem("zstores_donesound_v1",doneSound)}catch{}},[doneSound]);const onUpload=e=>{const fl=e.target.files&&e.target.files[0];if(!fl)return;if(fl.size>819200){setSoundErr("File too large \u2014 please use a sound under 800 KB.");return}const rd=new FileReader();rd.onload=()=>{const u=String(rd.result);try{localStorage.setItem("zstores_donecustom_v1",u);localStorage.setItem("zstores_donename_v1",fl.name)}catch{setSoundErr("Couldn't save that file on this device.");return}setDoneCustom(u);setDoneName(fl.name);setDoneSound("custom");window.__zsDone="custom";window.__zsCustom=u;setSoundErr("");playDone()};rd.onerror=()=>setSoundErr("Couldn't read that file.");rd.readAsDataURL(fl);e.target.value=""};useEffect(()=>{try{localStorage.setItem("zstores_rules_v30",JSON.stringify(n));window.zsDiffRules(n)}catch{}},[n]),useEffect(()=>{try{localStorage.setItem("zstores_orders_v1",JSON.stringify(i0))}catch{}},[i0]),useEffect(()=>{try{localStorage.setItem("zstores_unmatched_v1",JSON.stringify(h))}catch{}},[h]),useEffect(()=>{try{localStorage.setItem("zstores_extracteddate_v1",E)}catch{}},[E]),useEffect(()=>{try{localStorage.setItem("zstores_filename_v1",O)}catch{}},[O]),useEffect(()=>{try{localStorage.setItem("zstores_checked_v1",JSON.stringify(x))}catch{}},[x]),useEffect(()=>{try{localStorage.setItem("zstores_ticked_v1",JSON.stringify(te))}catch{}},[te]),useEffect(()=>{v(null)},[m]);const N=useCallback(e=>{const a=e.toLowerCase();return a.includes("thick")||a.includes("level")?"DRY":a.includes("ice cream")||a.includes("ice-cream")||a.includes("bulla")||a.includes("carrot cake")?"FREEZER":a.includes("ice coffee")||a.includes("iced coffee")?"CHILLER":a.includes("soy milk")||a.includes("lactose free")||a.includes("rice milk")||a.includes("vitasoy")||a.includes("so good")||a.includes("little things")||a.includes("sugar")||a.includes("tea")||a.includes("coffee")||a.includes("cracker")||a.includes("biscuit")?"DRY":[...n["CHILLER RUN AUNG"]||[],"brownes","milk","yoghurt","yogurt","custard","pudding","juice","butter","margarine","cheese","sandwich","ice coffee","iced coffee","chill","fresh apple","apple fresh"].some(s=>a.includes(s.toLowerCase()))?"CHILLER":"DRY"},[n]),V=useCallback((e,a)=>{const t=e.toLowerCase(),s=a.toLowerCase().replace(/[^a-z0-9]/g,"");if(t.includes("sandwich")||t.includes("freshstar")||t.includes("ham & salad")||t.includes("egg mayo"))return REHAB_WARDS.some(r=>s.includes(r))?"REHAB COLD RUN ZAW":null;if(s.includes("emergency")||s.includes("ed"))return"ED(EMERGENCY) DAVE";if(MEDI_HOTEL_WARDS.some(r=>s.includes(r)))return"MEDI HOTEL RUN";if(REHAB_WARDS.some(r=>s.includes(r)))return REHAB_FREEZER_KEYWORDS.some(l=>t.includes(l))?"REHAB FREEZER RUN LIN":t.includes("sandwich")||t.includes("freshstar")||t.includes("ham & salad")||t.includes("egg mayo")||(n["REHAB COLD RUN ZAW"]||DEFAULT_RULES["REHAB COLD RUN ZAW"]).some(l=>t.includes(l.toLowerCase()))?"REHAB COLD RUN ZAW":"REHAB DRY RUN STEVE";if((t.includes("ice coffee - brownes pc 300 ml")||t.includes("ice coffee")||t.includes("iced coffee"))&&ICE_COFFEE_BEN_PANTRY_WARDS.some(r=>s.includes(r)))return"PANTRY RUN YEE";if(BREAD_KEYWORDS.some(r=>t.includes(r)))return null;if(t.includes("sandwich")||t.includes("ham & salad")||t.includes("egg mayo"))return"CHILLER RUN AUNG";if(AFTERNOON_KEYWORDS.some(r=>t.includes(r)))return"AFTERNOON RUN YEO";if(t.includes("thick")||t.includes("level"))return"PANTRY RUN YEE";for(const[r,l]of Object.entries(n))if(!["ED(EMERGENCY) DAVE","REHAB COLD RUN ZAW","REHAB DRY RUN STEVE","MEDI HOTEL RUN"].includes(r)&&l.some(u=>t.includes(u.toLowerCase())))return r;return"PANTRY RUN YEE"},[n,N]),re=useCallback(e=>{const a=[],t=[];let s="Unknown Ward",r="",sundayHit=!1;for(let l=0;l<e.length;l++){const u=e[l],g=u.toLowerCase();/\bsun(day)?\b/i.test(u)&&(DATE_REGEX.test(u)||g.includes("date")||g.includes("deliver"))&&(sundayHit=!0);if(!r&&g.includes("for date")){const b=u.match(DATE_REGEX);if(b)r=formatDateDDMMYY(b[0]);else if(l+1<e.length){const c=e[l+1].match(DATE_REGEX);c&&(r=formatDateDDMMYY(c[0]))}}else if(!r&&g.includes("delivery note")){const b=u.match(DATE_REGEX);b&&(r=formatDateDDMMYY(b[0]))}if(u.includes("FSH-")||u.toLowerCase().includes("rehab")||u.toLowerCase().includes("mental health")||u.toLowerCase().includes("emergency")){if(!r){const c=u.match(DATE_REGEX);c&&(r=formatDateDDMMYY(c[0]))}const b=u.match(/(FSH-[A-Za-z0-9\s\/]+?|Mental Health[A-Za-z0-9\s]*|Rehab\s+[A-Za-z0-9]+|Emergency)(?=\s+Ad|\s+\/|$)/i);s=b?b[1].trim():u.trim();continue}if(u.match(/^\d+$/)&&l+3<e.length){const b=e[l+1],c=e[l+2],p=e[l+3],M=b.match(/^\d+(\.\d+)?$/),I=p&&p.length>0&&!p.match(/^\d+(\.\d+)?$/),T=c&&c.length>0&&c.length<=20&&!c.match(/^\d+(\.\d+)?$/);if(M&&I&&T){const G=UNIT_ALIASES[c.trim().toLowerCase()],z=G||c.trim(),J=V(p,s);let K=!1;const q=p.match(/\(([^()]*)\)\s*$/);if(q){const ue=q[1].toLowerCase(),X=Object.keys(UNIT_ALIASES).find(be=>new RegExp(`\\b${be}\\b`).test(ue));X&&UNIT_ALIASES[X]!==z&&(K=!0)}J!==null&&a.push({id:`${s}-${p}-${l}-${Math.random().toString(36).slice(2)}`,ward:s,qty:parseFloat(b),unit:z,unitVerified:!!G&&!K,name:p,category:J}),l+=3;continue}M||t.push({ward:s,snippet:[u,b].filter(Boolean).join(" / ")})}}return{orders:a,unmatched:t,extractedDate:r,sunday:sundayHit}},[V]),le=async e=>{const a=e.target.files[0];if(a){Z(!0),C("");try{const t=await a.arrayBuffer(),s=await pdfjsLib.getDocument({data:t}).promise;let r=[],l=0;for(let c=1;c<=s.numPages;c++)try{const I=(await(await s.getPage(c)).getTextContent()).items.map(T=>normalizeLine(T.str||"")).filter(Boolean);r=[...r,...I]}catch{l+=1}if(r.length===0)throw new Error("No readable text found in this PDF. It may be a scanned image rather than a text-based delivery note.");const{orders:u,unmatched:g,extractedDate:b,sunday:sd}=re(r);u.length===0?C("The PDF loaded, but no order lines were recognized. The delivery note format may have changed \u2014 check the Review panel and the original PDF."):l>0&&C(`Loaded with ${l} page(s) that couldn't be read \u2014 some items may be missing.`),d(u),w(g),A(b),setSunFlag(!!sd),Q(a.name),S({}),D({}),v(null),_(!1)}catch(t){C("Couldn't read this PDF: "+t.message),d([]),w([])}finally{Z(!1),e.target.value=""}}},ne=e=>{const it=f.find(o=>o.id===e);if(it){if(x[e])playUntick();else{const ws=f.filter(o=>o.ward===it.ward);ws.every(o=>o.id===e||x[o.id])?playDone():playTick()}}S(a=>({...a,[e]:!a[e]}))},oe=e=>v(a=>a===e?null:e),f=useMemo(()=>{const b=i.filter(e=>e.category===m);const df=STANDING_DEFS[m==="SUNDAY RUN"?"DRY RUN JAMES":m];if(df&&b.length>0)return[...b,...df.items.map((it,x)=>{const ex=b.find(o=>it.re.test(o.name));return{id:`standing-${m}-${x}`,ward:df.ward,qty:it.qty,unit:ex?ex.unit:it.unit,displayUnit:it.unit,unitVerified:!0,name:ex?ex.name:it.name,category:m,standing:!0,noSummary:!0,perLevel:df.perLevel}})];if(m==="REHAB COLD RUN ZAW"&&b.length>0){const ex=b.find(o=>/fruit platter/i.test(o.name)),mh=b.find(o=>(o.ward||"").toLowerCase().replace(/[^a-z0-9]/g,"").includes("mentalhealtha"));return[...b,{id:"standing-fruit-platter",ward:mh?mh.ward:"Mental Health A",qty:10,unit:ex?ex.unit:"Each",unitVerified:!0,name:ex?ex.name:"Fruit Platter PC",category:m,standing:!0}]}if(m!=="CHILLER RUN AUNG"||b.length===0)return b;const st=Object.keys(CHILLER_STANDING).map(k=>{const ex=b.find(o=>chillerRank(o.name)===+k);return{id:`standing-${k}`,ward:"ICU CLINICAL FRIDGE",qty:CHILLER_STANDING[k],unit:ex?ex.unit:"Each",unitVerified:!0,name:ex?ex.name:CHILLER_STANDING_NAMES[k],category:m,standing:!0,perLevel:!0}});return[...b,...st]},[i,m]),ie=e=>{const a=`${m}|${e}`;D(t=>({...t,[a]:!t[a]}))},F=useMemo(()=>f.filter(e=>x[e.id]).length,[f,x]),de=()=>{S(e=>{const a={...e};return f.forEach(t=>{delete a[t.id]}),a}),D(e=>{const a={...e};return Object.keys(U).forEach(t=>{delete a[`${m}|${t}`]}),a})},U=useMemo(()=>{const e={};return f.forEach(a=>{if(a.noSummary||a.standing&&/^icuclinical(cupboard|fridge)$/.test((a.ward||"").toLowerCase().replace(/[^a-z0-9]/g,"")))return;const t=summaryKey(a);e[t]=(e[t]||0)+a.qty}),e},[f]),L=useMemo(()=>{const e={};return f.forEach(a=>{if(a.noSummary||a.standing&&/^icuclinical(cupboard|fridge)$/.test((a.ward||"").toLowerCase().replace(/[^a-z0-9]/g,"")))return;const t=summaryKey(a);e[t]||(e[t]={total:0,checkedCount:0}),e[t].total+=1,x[a.id]&&(e[t].checkedCount+=1)}),e},[f,x]);useEffect(()=>{if(!y)return;const e=L[y];e&&e.total>0&&e.checkedCount===e.total&&v(null)},[L,y]);const j=(e,a)=>{const t={};return a.forEach(s=>{const r=Object.keys(e).find(l=>l.toLowerCase().replace(/[^a-z0-9]/g,"")===s.toLowerCase().replace(/[^a-z0-9]/g,""));r&&!t[r]&&(t[r]=e[r])}),Object.keys(e).forEach(s=>{t[s]||(t[s]=e[s])}),t},B=useMemo(()=>{const e={};if(f.forEach(t=>{e[t.ward]||(e[t.ward]=[]),e[t.ward].push(t)}),m==="ED(EMERGENCY) DAVE"||m==="MEDI HOTEL RUN"||m==="REHAB FREEZER RUN LIN"||m==="PANTRY RUN YEE"||m==="AFTERNOON RUN YEO"||m==="SUNDAY RUN"){const t={FREEZER:0,CHILLER:1,DRY:2},fr=e=>{const b=e.toLowerCase();return b.includes("ice cream")||b.includes("ice-cream")||b.includes("bulla")?0:b.includes("carrot cake")?1:2};Object.keys(e).forEach(s=>{e[s].sort((r,l)=>{const g=t[N(r.name)]-t[N(l.name)];return g!==0?g:fr(r.name)-fr(l.name)})})}m==="REHAB COLD RUN ZAW"&&Object.keys(e).forEach(s=>{e[s].sort((r,l)=>zawRank(r.name)-zawRank(l.name))}),m==="CHILLER RUN AUNG"&&Object.keys(e).forEach(s=>{e[s].sort((r,l)=>chillerRank(r.name)-chillerRank(l.name))}),m==="REHAB DRY RUN STEVE"&&Object.keys(e).forEach(s=>{e[s].sort((r,l)=>steveRank(r.name)-steveRank(l.name))}),/MILK RUN$/.test(m)&&Object.keys(e).forEach(s=>{e[s].sort((r,l)=>milkRank(r.name)-milkRank(l.name))});const a={"CD MILK RUN":CD_MILK_WARD_ORDER,"AB MILK RUN":AB_MILK_WARD_ORDER,"CHILLER RUN AUNG":CHILLER_WARD_ORDER,"JUICE RUN McCUTCHEON":JUICE_WARD_ORDER,"REHAB COLD RUN ZAW":ZAW_REHAB_WARD_ORDER,"REHAB DRY RUN STEVE":STEVE_REHAB_WARD_ORDER,"REHAB FREEZER RUN LIN":REHAB_FREEZER_WARD_ORDER};return a[m]?j(e,a[m]):["DRY RUN JAMES","AB/CD FREEZER RUN BEN","AFTERNOON RUN YEO","PANTRY RUN YEE","SUNDAY RUN"].includes(m)?j(e,STANDARD_RUN_WARD_ORDER):e},[f,m,N]),ce=e=>{e.preventDefault(),H.trim()&&(o(a=>({...a,[k]:[...a[k]||[],H.trim()]})),Y(""))},me=(e,a)=>{o(t=>({...t,[e]:t[e].filter(s=>s!==a)}))},we=()=>{if(!window.confirm("Clear today's uploaded data and start over? Your saved item rules won't be affected."))return;d([]),w([]),A(""),setSunFlag(!1),Q(""),S({}),D({}),v(null),C(""),_(!1);window.zsLog("Day data cleared");try{["zstores_sunflag_v1","zstores_orders_v1","zstores_unmatched_v1","zstores_extracteddate_v1","zstores_filename_v1","zstores_checked_v1","zstores_ticked_v1"].forEach(k=>localStorage.removeItem(k))}catch{}},pe=()=>{try{const b=new Blob([JSON.stringify(n,null,2)],{type:"application/json"}),u=URL.createObjectURL(b),el=document.createElement("a");el.href=u,el.download="zstores-rules-backup.json",document.body.appendChild(el),el.click(),el.remove(),URL.revokeObjectURL(u)}catch{}},xe=e=>{const a=e.target.files[0];if(!a)return;const r=new FileReader;r.onload=()=>{try{const t=JSON.parse(r.result);t&&typeof t=="object"&&(o(t),window.zsLog("Rules imported from file"))}catch{}},r.readAsText(a),e.target.value=""};return<div className="zs-page max-w-6xl mx-auto p-4 md:p-6 pb-24 md:pb-6"style={{width:"100%",boxSizing:"border-box",minWidth:0}}>
+
+          {}
+          <div className="print-header items-center justify-between border-b-2 border-black pb-2 mb-4">
+            <div className="font-display font-extrabold text-lg">Zstores — <CategoryLabel name={m}isSelected={!1}/></div>
+            <div className="text-sm">{E?`Delivery date: ${E}`:""}</div>
+          </div>
+
+          {}
+          <header className="no-print bg-ink text-white p-4 rounded-2xl shadow-lg mb-6 relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-blue-500 via-fuchsia-500 to-amber-400"/>
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <div className="flex items-center gap-3">
+                <GeminiZLogo/>
+                <div>
+                  <h1 className="font-display text-2xl font-extrabold tracking-tight text-white">
+                    Zstores
+                  </h1>
+                  <p className="text-slate-400 text-xs">Hospital store category run dispatch</p>
+                </div>
+              </div>
+
+              <nav className="flex items-center gap-2"role="tablist"aria-label="Sections">
+                <button role="tab"aria-selected={R==="picker"}onClick={()=>W("picker")}className={`px-4 py-2 text-sm font-semibold rounded-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${R==="picker"?"bg-emerald-500 text-slate-950":"bg-white/10 text-slate-200 hover:bg-white/20"}`}>
+                  Run picker
+                </button>
+                <button role="tab"aria-selected={R==="settings"}onClick={()=>adminOk?W("settings"):setPinOpen(!0)}className={`px-4 py-2 text-sm font-semibold rounded-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${R==="settings"?"bg-emerald-500 text-slate-950":"bg-white/10 text-slate-200 hover:bg-white/20"}`}>
+                  Item rules
+                </button>
+              </nav>
+            </div>
+          </header>{pinOpen&&<div className="no-print fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"onClick={()=>{setPinOpen(!1);setPinVal("");setPinErr(!1)}}><div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-xs"onClick={e=>e.stopPropagation()}><h3 className="text-lg font-bold text-slate-900 mb-1">Admin passcode</h3><p className="text-xs text-slate-500 mb-3">Enter the passcode to edit item rules.</p><input type="password"autoFocus value={pinVal}onChange={e=>{setPinVal(e.target.value);setPinErr(!1)}}onKeyDown={e=>{e.key==="Enter"&&tryPin()}}className={`w-full border rounded-lg px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-emerald-400 ${pinErr?"border-red-500":"border-slate-300"}`}placeholder="Passcode"/>{pinErr&&<p className="text-xs font-semibold text-red-600 mt-1">{pinErr==="locked"?"Too many attempts. Wait 30 seconds.":"Incorrect passcode"}</p>}<div className="flex gap-2 mt-4"><button onClick={()=>{setPinOpen(!1);setPinVal("");setPinErr(!1)}}className="flex-1 px-3 py-2 rounded-lg bg-slate-200 text-slate-700 text-sm font-semibold hover:bg-slate-300">Cancel</button><button onClick={tryPin}className="flex-1 px-3 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700">Unlock</button></div></div></div>}{soundOpen&&<div className="no-print fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"onClick={()=>setSoundOpen(!1)}><div className="bg-white rounded-xl shadow-xl p-5 w-full max-w-sm"onClick={e=>e.stopPropagation()}><h3 className="text-lg font-bold text-slate-900 mb-1">Ward done sound</h3><p className="text-xs text-slate-500 mb-3">Plays when you tick the last item on a ward card. Saved on this device.</p>{!soundOn&&<p className="text-xs font-semibold text-red-600 mb-2">Sound is off — turn it on to hear previews.</p>}<div className="space-y-1">{[["chime","Chime"],["bell","Bell"],["fanfare","Fanfare"],["dingdong","Ding-dong"],["success","Success beep"],["custom",doneCustom?`My sound (${doneName||"uploaded"})`:"My own sound (upload below)"]].map(([k,l])=><button key={k}onClick={()=>{if(k==="custom"&&!doneCustom)return;window.__zsDone=k;setDoneSound(k);playDone()}}className={`w-full flex items-center justify-between px-3 py-2 rounded-lg border text-sm text-left ${doneSound===k?"border-emerald-500 bg-emerald-50 font-semibold":"border-slate-200 hover:bg-slate-50"}${k==="custom"&&!doneCustom?" opacity-50":""}`}><span className="truncate">{l}</span><span>{doneSound===k?"✓":"▶"}</span></button>)}</div><label className="block mt-3 text-xs font-semibold text-slate-700">Upload your own sound (mp3, m4a, wav — max 800 KB)<input type="file"accept="audio/*"onChange={onUpload}className="block w-full mt-1 text-xs"/></label>{soundErr&&<p className="text-xs font-semibold text-red-600 mt-2">{soundErr}</p>}<button onClick={()=>setSoundOpen(!1)}className="mt-4 w-full px-3 py-2 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700">Close</button></div></div>}<div className="no-print text-[10px] text-slate-400 text-center py-1">Version 23 Oct 2026 b4 · standing orders ward-card only · Last saved {window.zsLastSaved()}</div>
+
+          {R==="picker"?<div>
+              {}
+              <div className="no-print bg-white p-4 rounded-xl shadow-sm mb-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="w-full md:w-auto">
+                  <label htmlFor="pdf-upload"className="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1">
+                    Upload today's delivery note (PDF)
+                  </label>
+                  <input id="pdf-upload"type="file"accept="application/pdf"onChange={le}className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded"/>
+                  {O&&<p className="text-[11px] text-slate-400 mt-1 truncate max-w-xs">{O}</p>}
+                  <button type="button" onClick={we} className="mt-2 text-[11px] font-semibold text-slate-500 hover:text-red-600 underline decoration-dotted no-print">
+                    Reset &amp; clear today's data
+                  </button>
+                </div>
+
+                {i.length>0&&<div className="w-full md:w-auto flex gap-2">
+                    {h.length>0&&<button onClick={()=>_(e=>!e)}className="px-4 py-2.5 bg-amber-100 hover:bg-amber-200 text-amber-900 text-sm font-medium rounded-lg border border-amber-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">
+                        {h.length} to review
+                      </button>}
+                    <button onClick={()=>window.print()}className="flex-1 md:flex-none px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white text-sm font-medium rounded-lg shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400">
+                      Print this run
+                    </button>
+                  </div>}
+              </div>
+
+              {$&&<div className="no-print bg-amber-50 border border-amber-300 text-amber-900 text-sm px-4 py-3 rounded-xl mb-4 flex items-start justify-between gap-3">
+                  <span>{$}</span>
+                  <button onClick={()=>C("")}aria-label="Dismiss"className="font-bold text-amber-700 hover:text-amber-900">×</button>
+                </div>}
+
+              {se&&h.length>0&&<div className="no-print bg-white border border-amber-300 rounded-xl p-4 mb-4">
+                  <h3 className="text-sm font-bold text-amber-900 mb-2">Lines that need a manual look</h3>
+                  <p className="text-xs text-slate-500 mb-3">
+                    These looked like the start of an order row but didn't fully match the expected pattern, so they weren't auto-sorted. Check them against the original PDF.
+                  </p>
+                  <ul className="space-y-1 max-h-56 overflow-y-auto">
+                    {h.map((e,a)=><li key={a}className="text-xs bg-amber-50 border border-amber-200 rounded px-2 py-1.5 flex justify-between gap-2">
+                        <span className="font-medium text-slate-700">{e.ward}</span>
+                        <span className="text-slate-500 truncate">{e.snippet}</span>
+                      </li>)}
+                  </ul>
+                </div>}
+
+              {P&&<div className="bg-white p-8 rounded-xl shadow-sm text-center font-medium text-slate-600 zs-enter">
+                  Reading delivery note…
+                </div>}
+
+              {}
+              {i.length>0&&<div className="no-print grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+                  {AVAILABLE_CATEGORIES.map(e=>{const a=i.filter(l=>l.category===e),t=a.length,s=a.filter(l=>x[l.id]).length,r=m===e,done=t>0&&s===t;return<button key={e}onClick={()=>ee(e)}aria-pressed={r}style={{width:"100%",boxSizing:"border-box"}}className={`relative p-3 rounded-xl border text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${r?"bg-emerald-600 text-white border-emerald-600 shadow-md":done?"bg-emerald-50 text-slate-700 border-emerald-400 ring-1 ring-emerald-300":"bg-white text-slate-700 border-slate-200 hover:border-slate-300"}`}>
+                        {done&&<span className={`absolute top-2 right-2 text-[10px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5 ${r?"bg-white text-emerald-700":"bg-emerald-500 text-white"}`}>
+                            ✓ Done
+                          </span>}
+                        <div className="text-xs font-bold tracking-wide opacity-90 pr-12">
+                          <CategoryLabel name={e}isSelected={r}/>
+                        </div>
+                        <div className="text-xl font-bold mt-1 tabular-nums">
+                          {t} <span className="text-xs font-normal">items</span>
+                        </div>
+                        {t>0&&<div className="mt-2">
+                            <ProgressBar done={s}total={t}colorClass={r?"bg-white":"bg-emerald-500"}/>
+                            <div className={`text-[10px] font-bold mt-1 tabular-nums ${done?r?"text-white":"text-emerald-600":r?"text-white/80":"text-slate-400"}`}>
+                              {done?"100% complete":`${Math.round(s/t*100)}%`}
+                            </div>
+                          </div>}
+                      </button>})}
+                </div>}
+
+              {}
+              {i.length>0?<div className="zs-delivery-details"style={{width:"100%",minWidth:0}}>
+                  <div className="mb-4 flex flex-wrap justify-between items-end border-b pb-3 gap-2">
+                    <div>
+                      <h2 className="text-xl font-bold text-slate-800">
+                        <CategoryLabel name={m}isSelected={!1}/> delivery list
+                      </h2>
+                      <p className="text-xs text-slate-500">
+                        {m==="ED(EMERGENCY) DAVE"||m==="SUNDAY RUN"?"Sorted: freezer (top) \u2192 chiller (middle) \u2192 dry (bottom)":"Sorted in fixed route print sequence"}
+                        {WARD_ONLY_CATEGORIES[m]?` \xB7 ${WARD_ONLY_CATEGORIES[m]}`:""}
+                      </p>
+                    </div>
+                    <div className="no-print flex items-center gap-2 flex-wrap">
+                      {E&&<span className="text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-200 px-3 py-1 rounded-full">
+                          Date: {E}
+                        </span>}
+                      <span className="text-xs font-medium bg-slate-200 text-slate-700 px-3 py-1 rounded-full tabular-nums">
+                        {F}/{f.length} picked
+                      </span>
+                    </div>
+                  </div>
+
+                  {}
+                  {Object.keys(U).length>0&&<div className="card zs-summary-card bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-6"style={{width:"100%",maxWidth:"100%",minWidth:0,boxSizing:"border-box"}}>
+                      <div className="flex justify-between items-center mb-2 border-b border-emerald-200 pb-1 flex-wrap gap-1">
+                        <h3 className="text-sm font-bold text-emerald-900 tracking-wide">
+                          Catering store pick list summary
+                        </h3>
+                        <span className="text-[11px] text-emerald-700 font-medium">
+                          Tick to mark picked from the store · tap the row to highlight it below
+                        </span>
+                      </div>
+                      <div className="zs-summary-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2"style={{width:"100%",minWidth:0}}>
+                        {Object.entries(U).sort((p,q)=>m==="REHAB COLD RUN ZAW"?zawRank(p[0])-zawRank(q[0]):m==="CHILLER RUN AUNG"?chillerRank(p[0])-chillerRank(q[0]):m==="REHAB DRY RUN STEVE"?steveRank(p[0])-steveRank(q[0]):/MILK RUN$/.test(m)?milkRank(p[0])-milkRank(q[0]):({FREEZER:0,CHILLER:1,DRY:2})[N(p[0])]-({FREEZER:0,CHILLER:1,DRY:2})[N(q[0])]).map(([e,a])=>{const ov=runLimit(m,e)!=null&&Number(a)>runLimit(m,e),t=y===e,s=L[e],r=!!s&&s.checkedCount>0&&s.checkedCount<s.total,l=!!te[`${m}|${e}`];return<div key={e}className="print-row"style={{width:"100%",display:"block"}}>
+                            <div style={{width:"100%",boxSizing:"border-box",display:"grid",gridTemplateColumns:"auto minmax(0, 1fr)",alignItems:"stretch"}}className={`rounded border overflow-hidden transition ${l?"bg-slate-50 border-slate-200 opacity-70":t?"bg-amber-300 border-amber-500 ring-2 ring-amber-400 shadow-sm":"bg-white border-emerald-200"}`}>
+                              <label className="flex items-center pl-2 pr-1.5 cursor-pointer"title="Mark this item as picked from the store (doesn't affect ward rows below)">
+                                <TriStateCheckbox checked={l}indeterminate={!1}onChange={()=>ie(e)}label={`Mark ${e} as picked from the store`}/>
+                              </label>
+                              <button onClick={()=>oe(e)}aria-pressed={t}style={{width:"100%",boxSizing:"border-box",display:"grid",gridTemplateColumns:"minmax(0, 1fr) auto",alignItems:"center"}}className={`py-2 pr-3 pl-1 text-sm font-semibold transition text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${l?"text-slate-500":t?"text-slate-900 font-bold":"text-slate-800 hover:bg-emerald-100"}`}>
+                                <span style={{minWidth:0}}>
+                                  <span className={`block truncate ${l?"line-through":""}`}>{e}</span>{ov&&<span className="block text-[10px] font-bold text-red-600 tabular-nums">{runLimit(m,e)===0?"Check amount":`Over limit — max ${runLimit(m,e)}`}</span>}{runStanding(m,e)&&<span className="block text-[10px] font-semibold text-sky-700 tabular-nums">Includes +{runStanding(m,e)} standing order</span>}
+                                  {t&&s&&s.total>1&&s.checkedCount<s.total&&<span className="block text-[10px] font-medium text-amber-800 tabular-nums">
+                                      {s.checkedCount}/{s.total} ward lines picked — stays lit till 100%
+                                    </span>}
+                                  {r&&!t&&<span className="block text-[10px] font-medium text-slate-500 tabular-nums">
+                                      {s.checkedCount}/{s.total} ward lines picked
+                                    </span>}
+                                </span>
+                                {ov&&runLimit(m,e)===0?<span className="px-2 py-0.5 rounded font-bold ml-2 tabular-nums bg-red-600 text-white ring-2 ring-red-300">{a}</span>:ov?<span className="ml-2 inline-flex items-center gap-1"><span className={`px-2 py-0.5 rounded font-bold tabular-nums ${l?"bg-slate-300 text-slate-700":t?"bg-slate-900 text-white":"bg-emerald-600 text-white"}`}>{runLimit(m,e)}</span><span className="px-2 py-0.5 rounded font-bold tabular-nums bg-red-600 text-white ring-2 ring-red-300">+{Math.round((Number(a)-runLimit(m,e))*100)/100}</span></span>:<span className={`px-2 py-0.5 rounded font-bold ml-2 tabular-nums ${l?"bg-slate-300 text-slate-700":t?"bg-slate-900 text-white":"bg-emerald-600 text-white"}`}>{a}</span>}
+                              </button>
+                            </div>
+                            </div>})}
+                      </div>
+                    </div>}
+
+                  {}
+                  {Object.keys(B).length>0&&<div className="no-print flex items-center justify-between mb-3">
+                      <h3 className="text-sm font-bold text-slate-600 tracking-wide">Ward delivery lists</h3>
+                      <div className="flex items-center gap-2"><button onClick={()=>setSoundOn(v=>!v)}aria-pressed={soundOn}className="text-xs font-medium bg-slate-200 text-slate-700 hover:bg-slate-300 px-3 py-1 rounded-full transition-colors">{soundOn?"🔊 Sound on":"🔇 Sound off"}</button><button onClick={()=>setSoundOpen(!0)}className="text-xs font-medium bg-slate-200 text-slate-700 hover:bg-slate-300 px-3 py-1 rounded-full transition-colors">🔔 Done sound</button>{F>0&&<button onClick={de}className="text-xs font-medium bg-slate-200 text-slate-700 hover:bg-slate-300 px-3 py-1 rounded-full transition-colors">
+                          Reset checks
+                        </button>}</div>
+                    </div>}
+                  {Object.keys(B).length===0?<div className="bg-white p-8 rounded-xl shadow-sm text-center text-slate-500">
+                      No items assigned to <CategoryLabel name={m}isSelected={!1}/> from today's delivery note.
+                    </div>:<div className="zs-ward-list grid grid-cols-1 gap-4"style={{gridTemplateColumns:"minmax(0, 1fr)",width:"100%",minWidth:0}}>
+                      {Object.entries(B).map(([e,a])=>{const t=a.filter(s=>x[s.id]).length,wd=a.length>0&&t===a.length;return<div key={e}className={`card zs-ward-card rounded-xl shadow-sm p-4 border transition ${wd?"bg-emerald-50 border-emerald-400 ring-1 ring-emerald-300":"bg-white border-slate-200"}`}style={{width:"100%",maxWidth:"100%",minWidth:0,boxSizing:"border-box"}}>
+                          <div className="print-keep-with-next border-b pb-2 mb-3">
+                            <div className="flex justify-between items-center">
+                              <span className="flex items-center gap-2 min-w-0"><span className="text-lg font-bold text-slate-900">{e}</span>{wd&&<span className="no-print inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500 text-white flex-shrink-0">✓ Done</span>}</span>
+                              <span className="text-xs bg-emerald-100 text-emerald-800 font-semibold px-2.5 py-0.5 rounded-full tabular-nums no-print">
+                                {t}/{a.length}
+                              </span>
+                            </div>
+                            <div className="no-print mt-2">
+                              <ProgressBar done={t}total={a.length}/>
+                            </div>
+                          </div>
+
+                          {a.some(o=>o.perLevel)&&<div className="text-[10px] font-semibold text-sky-700 mb-1">P/L = PER LEVEL (standing order)</div>}<div className="divide-y divide-slate-100">
+                            {a.map(s=>{const r=!!x[s.id],l=N(s.name),u=summaryKey(s),g=y===u&&!s.noSummary,b=m==="MEDI HOTEL RUN"||m==="SUNDAY RUN"?{FREEZER:"bg-cyan-100 text-cyan-900 border border-cyan-200",CHILLER:"bg-blue-100 text-blue-900 border border-blue-200",DRY:"bg-violet-100 text-violet-900 border border-violet-200"}:{FREEZER:"bg-cyan-100 text-cyan-900 border border-cyan-200",CHILLER:"bg-blue-100 text-blue-900 border border-blue-200",DRY:"bg-amber-100 text-amber-900 border border-amber-200"};let c="hover:bg-slate-50";g?c=r?"bg-amber-50 text-amber-800 border-l-4 border-amber-300":"bg-amber-100 text-amber-950 font-bold border-l-4 border-amber-500 shadow-sm":r&&(c="bg-slate-50 opacity-60");let p="text-slate-800 font-medium";return g?p=r?"line-through text-amber-700 font-medium":"text-amber-950 font-bold text-base":r&&(p="line-through text-slate-400 font-normal"),<div key={s.id}className="print-row"style={{display:"block"}}>
+                                <label className={`py-2.5 px-2 flex items-center justify-between cursor-pointer rounded transition ${c}`}>
+                                  <div className="flex items-center gap-3 min-w-0">
+                                    <span className="print-checkbox"aria-hidden="true"/>
+                                    <input type="checkbox"checked={r}onChange={()=>ne(s.id)}className="w-5 h-5 accent-emerald-600 rounded cursor-pointer no-print flex-shrink-0"/>
+                                    <span className={`text-sm truncate min-w-0 ${p}`}>
+                                      {s.name}
+                                    </span>
+                                    {!s.unitVerified&&<span className="no-print text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300 flex-shrink-0"title="Unit wasn't a recognized label, or disagrees with the unit named in the item itself — double check it.">
+                                        verify unit
+                                      </span>}
+                                    {(m==="ED(EMERGENCY) DAVE"||m==="MEDI HOTEL RUN"||m==="SUNDAY RUN")&&<span className={`text-[10px] font-bold px-2 py-0.5 rounded flex-shrink-0 ${b[l]}`}>
+                                        {l}
+                                      </span>}
+                                  </div>
+
+                                  <div className={`text-sm font-bold px-3 py-1 rounded-md tabular-nums flex-shrink-0 ${g?r?"bg-amber-100 text-amber-800 border border-amber-300":"bg-amber-300 text-slate-900 border border-amber-400":"bg-slate-100 text-slate-900"}`}>
+                                    {s.qty} {s.perLevel?<span className="text-xs font-bold text-sky-700"title="Per level (standing order)">P/L</span>:<span className="text-xs font-normal text-slate-600">{s.displayUnit||s.unit}</span>}
+                                  </div>
+                                </label>
+                                </div>})}
+                          </div>
+                        </div>})}
+                    </div>}
+                </div>:!P&&<div className="bg-white p-12 rounded-xl shadow-sm text-center zs-enter">
+                    <div className="flex justify-center mb-3"><GeminiZLogo className="w-12 h-12 opacity-80"/></div>
+                    <h3 className="text-lg font-bold text-slate-800">No delivery note loaded yet</h3>
+                    <p className="text-sm text-slate-500 max-w-md mx-auto mt-1">
+                      Upload today's PDF delivery note above to split it into the store's category runs.
+                    </p>
+                  </div>}
+            </div>:<div className="no-print bg-white rounded-xl shadow-sm p-6">
+              <div className="flex items-center justify-between gap-2 mb-2"><h2 className="text-xl font-bold text-slate-800">Category rule settings</h2><button onClick={()=>{setAdminOk(!1);W("picker")}}className="text-xs font-semibold px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 hover:bg-slate-300">🔒 Lock</button></div>
+              <p className="text-xs text-slate-500 mb-6">
+                Manage keywords used to automatically route incoming PDF items into the category runs.
+                Runs assigned purely by ward (ED(EMERGENCY) DAVE, Medi Hotel, and the rehab dry fallback) aren't listed
+                as targets below, since keywords have no effect on them.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3 mb-6 no-print">
+                <button type="button" onClick={pe} className="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-800 text-white hover:bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400">
+                  Export rules
+                </button>
+                <label className="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer focus-within:ring-2 focus-within:ring-emerald-400">
+                  Import rules
+                  <input type="file" accept="application/json" onChange={xe} className="hidden"/>
+                </label>
+                <p className="text-[11px] text-slate-400 w-full md:w-auto">
+                  Rules are saved per device/browser. Export here, then Import on your other device to keep them in sync.
+                </p>
+              </div>
+
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 no-print">
+                <h3 className="text-sm font-bold text-slate-800 mb-1">Backup &amp; records</h3>
+                <p className="text-[11px] text-slate-500 mb-3">
+                  Everything is stored only on this device (browser storage). Last saved: <span className="font-semibold">{window.zsLastSaved()}</span>.
+                  Make a backup file regularly and keep it in a safe place. Backups contain ward orders, rules and settings, no patient information.
+                </p>
+                <div className="flex flex-wrap items-center gap-3 mb-3">
+                  <button type="button" onClick={()=>window.zsExportAll()} className="px-4 py-2 rounded-lg text-sm font-semibold bg-emerald-600 text-white hover:bg-emerald-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400">Export all data (backup)</button>
+                  <label className="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer focus-within:ring-2 focus-within:ring-emerald-400">
+                    Import all data
+                    <input type="file" accept="application/json" onChange={e=>window.zsImportAll(e)} className="hidden"/>
+                  </label>
+                </div>
+                <h4 className="text-xs font-bold text-slate-700 mb-1">Change log (latest 15, this device)</h4>
+                <ul className="text-[11px] text-slate-600 space-y-0.5 max-h-40 overflow-y-auto">
+                  {window.zsGetLog().slice(-15).reverse().map((x,i)=><li key={i}><span className="text-slate-400">{window.zsFmtTime(x.t)}</span> · {x.m}</li>)}
+                  {window.zsGetLog().length===0&&<li className="text-slate-400">No changes recorded yet.</li>}
+                </ul>
+              </div>
+
+              <form onSubmit={ce}className="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-8 flex flex-col md:flex-row gap-3 items-end">
+                <div className="flex-1 w-full">
+                  <label htmlFor="new-keyword"className="block text-xs font-semibold text-slate-600 mb-1">Item name / keyword</label>
+                  <input id="new-keyword"type="text"value={H}onChange={e=>Y(e.target.value)}placeholder="e.g., Strawberry Yoghurt"className="w-full p-2.5 border rounded-lg text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"/>
+                </div>
+
+                <div className="w-full md:w-56">
+                  <label htmlFor="target-category"className="block text-xs font-semibold text-slate-600 mb-1">Assign to category run</label>
+                  <select id="target-category"value={k}onChange={e=>ae(e.target.value)}className="w-full p-2.5 border rounded-lg text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 bg-white">
+                    {EDITABLE_CATEGORIES.map(e=><option key={e}value={e}>{e}</option>)}
+                  </select>
+                </div>
+
+                <button type="submit"className="w-full md:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm rounded-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400">
+                  Add item rule
+                </button>
+              </form>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {Object.entries(n).map(([e,a])=>{const t=!!WARD_ONLY_CATEGORIES[e];return<div key={e}className={`border rounded-xl p-4 ${t?"border-slate-100 bg-slate-50":"border-slate-200"}`}>
+                    <h3 className="font-bold text-slate-800 border-b pb-2 mb-3 flex justify-between items-center gap-2">
+                      <CategoryLabel name={e}isSelected={!1}/>
+                      <span className="text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-600 flex-shrink-0">
+                        {t?"ward-based":`${a.length} keywords`}
+                      </span>
+                    </h3>
+
+                    {t?<p className="text-xs text-slate-400 italic">{WARD_ONLY_CATEGORIES[e]}</p>:<div className="flex flex-wrap gap-1.5">
+                        {a.length===0?<span className="text-xs text-slate-400 italic">No keywords yet — nothing routes here automatically until you add one.</span>:a.map((s,r)=><span key={r}className="bg-slate-100 text-slate-700 text-xs px-2.5 py-1 rounded-md flex items-center gap-2 border border-slate-200">
+                              {s}
+                              <button onClick={()=>me(e,s)}aria-label={`Remove ${s}`}className="text-slate-400 hover:text-red-500 font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-red-300 rounded">
+                                ×
+                              </button>
+                            </span>)}
+                      </div>}
+                  </div>})}
+              </div>
+            </div>}
+
+          {}
+          {i.length>0&&R==="picker"&&<div className="no-print md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-3 flex items-center justify-between gap-3 shadow-[0_-4px_12px_rgba(0,0,0,0.06)]">
+              <div className="text-xs font-semibold text-slate-600 tabular-nums">
+                {F}/{f.length} picked
+              </div>
+              <button onClick={()=>window.print()}className="px-4 py-2 bg-slate-800 text-white text-sm font-medium rounded-lg">
+                Print run
+              </button>
+            </div>}
+        </div>}const root=ReactDOM.createRoot(document.getElementById("root"));root.render(<App/>);
+</script>
+</body></html>
